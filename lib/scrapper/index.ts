@@ -33,13 +33,18 @@ export async function scrapeAmazonProduct(url: string) {
     );
 
     const originalPrice = extractPrice(
-      //   $(".priceblock_ourprice"),
-      $(".a-price .a-text-price span.a-offscreen"),
-      //   $("span.aok-offscreen"),
-      //   $("#listprice"),
-      //   $("#priceblock_dealprice"),
-      //   $(".a-size-base.a-color-price"),
-      $("span.a-offscreen")
+      // //   $(".priceblock_ourprice"),
+      // $(".a-price .a-text-price span.a-offscreen"),
+      // //   $("span.aok-offscreen"),
+      // //   $("#listprice"),
+      // //   $("#priceblock_dealprice"),
+      // //   $(".a-size-base.a-color-price"),
+      // $("span.a-offscreen")
+      $("#priceblock_ourprice"),
+      $(".a-price.a-text-price span.a-offscreen"),
+      $("#listPrice"),
+      $("#priceblock_dealprice"),
+      $(".a-size-base.a-color-price")
     );
 
     const outOfStock =
@@ -57,6 +62,7 @@ export async function scrapeAmazonProduct(url: string) {
     const discountRate = $(".savingsPercentage").text().replace(/[-%]/g, "");
 
     const description = extractDescription($);
+
     const data = {
       url,
       currency: currency || "$",
@@ -75,6 +81,8 @@ export async function scrapeAmazonProduct(url: string) {
       highestPrice: Number(originalPrice) || Number(currentPrice),
       averagePrice: Number(currentPrice) || Number(originalPrice),
     };
+
+    return data;
   } catch (e: any) {
     throw new Error(`Faild to scrape Product ${e.message}`);
   }
